@@ -2,12 +2,13 @@ package stream;
 
 import object.ScopeFunctions;
 import org.junit.jupiter.api.Test;
+import utils.KotlinCloneable;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ScopeFunctionTest {
 
-    static class TestDto implements Cloneable {
+    static class TestDto implements KotlinCloneable<TestDto> {
         private String name;
         private Integer age;
 
@@ -24,6 +25,10 @@ public class ScopeFunctionTest {
             return name;
         }
 
+        @Override
+        public TestDto clone() {
+            return new TestDto(this.name, this.age);
+        }
     }
 
 
@@ -47,6 +52,11 @@ public class ScopeFunctionTest {
             return s;
         });
         assertEquals(testDto.getName(), "tested");
+        var result = test.let(s -> {
+            s.setName("tested");
+            return "hello";
+        });
+        assertEquals(result, "hello");
     }
 
     @Test
@@ -56,6 +66,6 @@ public class ScopeFunctionTest {
         test.also(s -> {
             s.setName("tested");
         });
-        assertEquals(testDto.getName(), "tested");
+        assertEquals(testDto.getName(), "test");
     }
 }

@@ -1,27 +1,29 @@
 package object;
 
+import utils.KotlinCloneable;
+
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public interface ScopeFunctions<T extends Cloneable> {
+public interface ScopeFunctions<T extends KotlinCloneable<T>> {
     T object();
 
-    static <T extends Cloneable> ScopeFunctions<T> scope(T object) {
+    static <T extends KotlinCloneable<T>> ScopeFunctions<T> scope(T object) {
         return () -> object;
     }
+
     default T apply(Function<T, T> block) {
-        return block.apply(this.object());
+        block.apply(this.object());
+        return object();
     }
 
-    default T let(Function<T, T> block) {
+    default <R> R let(Function<T, R> block) {
         return block.apply(this.object());
     }
 
     default void also(Consumer<T> block) {
-         block.accept(this.object());
+        block.accept(this.object().clone());
     }
-
-
 
 
 }

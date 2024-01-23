@@ -58,6 +58,8 @@ public class KotlinStreamTest {
     void filterTest() {
         var streamKotlin = StreamKotlin.of(1, 2, 3, 12, 90);
         assertEquals(streamKotlin.filter(val -> val > 12).toList(), Arrays.asList(90));
+        streamKotlin = StreamKotlin.of(1, 2, null, 12, 90);
+        assertEquals(streamKotlin.filter(val -> val > 12).toList(), Arrays.asList(90));
     }
 
     @Test
