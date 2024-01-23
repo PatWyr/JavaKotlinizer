@@ -19,8 +19,8 @@ public class Pair<F, S> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Pair<?, ?> pair)) return false;
-
+        if (!(o instanceof Pair<?, ?>)) return false;
+        var pair = (Pair<?, ?>) o;
         if (!Objects.equals(first, pair.first)) return false;
         return Objects.equals(second, pair.second);
     }
